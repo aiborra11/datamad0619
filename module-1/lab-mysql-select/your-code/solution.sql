@@ -52,13 +52,13 @@ SELECT authors.au_id AS 'AUTHOR ID',
 SELECT authors.au_id AS 'AUTHOR ID', 
 	authors.au_lname AS 'LAST NAME',
     authors.au_fname AS 'FIRST NAME',
-    sum(sales.qty) AS 'TOTAL SALES',
-    IFNULL (SUM(sales.qty), 0) AS 'TOTAL SALES'
+   --  sum(sales.qty) AS 'TOTAL SALES',
+    COALESCE (SUM(sales.qty), 0) AS 'TOTAL SALES'
     
     FROM authors
-    INNER JOIN titleauthor
+    LEFT JOIN titleauthor
 		ON 	authors.au_id = titleauthor.au_id
-	INNER JOIN sales
+	LEFT JOIN sales
 		ON titleauthor.title_id = sales.title_id
         GROUP BY authors.au_id
         ORDER BY sum(sales.qty) DESC
